@@ -1,0 +1,114 @@
+Java 
+--Interface
+	-- Contract to be implemented by class
+	-- Set of method signatures(abstract methods)
+	-- Method implementations will not be there
+	-- public Final static variables -- by default
+	-- default methods (SE8 onwards)
+		-- methods with default implementation
+	-- Classes implementing interfaces
+	-- Use as references
+	-- Generics interfaces 
+		-- List<String> strArr=new ArrayList<String>()
+		-- List -- generic interface
+		-- ArrayList -- class implementing the interface
+		-- strArr
+	-- Custom interface
+	-- Cannot have a constructor
+--Functional Interface
+	-- Special type of interface
+	-- Only one abstract method allowed
+
+
+
+
+arr1=[10,20,30,40,50]
+Find the sum of all elements
+int sum=0;
+for(int i=0;i<arr1.length.i++)
+{
+	sum+=arr1[i];
+}
+sysout(sum);
+
+arr1.forEach(item -> {sysout(item*item);} );//100 400 900 1600 2500; all as individual values
+
+
+void function1(int a, int b)
+{
+	// some code here
+	return a+b;
+	return n1+n2;// error ;; cannot access n1,n2
+}
+
+function1(10,20);
+final int n1=10,n2=20;
+function1(n1,n2);
+
+
+
+Possible data types of fn
+-- Primitive data type as parameter
+-- String
+-- Object
+-- Function as a parameter (Method reference)
+	-- Anonymous functions
+	-- name is never used to call the function
+	-- Lambda functions
+
+
+void function2(fn)
+{
+	String res=fn();
+	//String res=display();error display is not avalable
+
+	// some more code
+}
+
+void display()
+{
+	sysout("Hello");
+	return "hello"
+}
+function2(display);
+
+Lambda expressions 
+	-- Anonymous function
+	-- Pass it as a parameter to another function
+	-- Used with Function Interface
+	-- Custom Functional Interfaces
+	
+Lambda function types
+Syntax:
+(param1, param2) -> {
+// body of the anonymous function
+}
+
+n-> n*n
+// Create a lambda function with a simple param n and will return its square
+// if there is a single param, best practice -- don't include within paranthesis
+
+(n1,n2)-> {
+	return n1*n2;
+}
+(n1,n2)-> n1*n2
+
+(n1,n2,n3)->n1*n2*n3
+
+Where are lambdas
+	-- Anonymous functions -- as part of function call
+	-- streams
+	-- Collections 
+	
+ls | grep
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,171 @@
+//28th jan 2025
+
+1. Get all the products belonging to a particular category "E001"
+
+//yasmin
+List<String> productInfoList = products.stream()
+		    .filter(product -> product.getCategoryId().equals("E001"))
+		    .collect(Collectors.toList());
+
+
+//gourav
+        productList.stream().filter(item->item.getCatergoryId().equals("E001")).forEach(System.out::println);    
+
+
+// andrei 
+// Find any product belonging to category E001
+productList.stream().filter(product -> product.getCategoryId().equals("E001")).findFirst();
+productList.stream().filter(product -> product.getCategoryId().equals("E001")).collect(Collectors.toList()); 
+
+//arvind
+productList.stream().filter(x-> x.getCategoryId().equals( "E001"))
+				.map(x -> new Object(){ int productId = x.productId, String productName = x.productName; })
+			    .forEach(x -> System.out.println(x.productId + " " + x.productName));
+
+
+//
+
+2. Get all the products belonging to a various categories 
+Group by category
+
+Category Id: E0001
+Products : List of products
+Result set:
+Map<String,List<Products>>
+
+//gourav
+Map<String, List<Products>> collect2 = productList.stream().collect(Collectors.groupingBy(item -> item.getCatergoryId()));
+
+//arvind
+Way 1:
+Map<Integer, List<Products>> data = productList.stream().collect(Collectors.groupingBy(Products::getCategoryId));
+data.forEach()
+
+Way 2:
+productList.stream().collect(Collectors.groupingBy(Products::getCategoryId)).forEach()
+
+// andrei
+Map<String, List<Products>> map = productList.stream()
+                .collect(Collectors.groupingBy(Products::getCategoryId));
+        map.forEach((categoryId, products) -> {
+            System.out.println(categoryId + "=>" + products);
+        });
+
+//yasmin
+
+Map<String,List<Products>> productInfoList = products.stream().
+			collect(Collectors.groupingBy(Products::getCategoryId));
+//Prathamesh
+Map<String, List<Products>> data = product.stream()
+        .collect(Collectors.groupingBy(Product::getCategoryId));
+
+Map<String, List<Products>> data = productList.stream().collect(Collectors.groupingBy(Products::getCategoryId));
+		for (Map.Entry<String, List<Products>> entry : data.entrySet()) {
+			System.out.println("CategoryId" + entry.getKey());
+			System.out.println("Products" + entry.getValue());
+			System.out.println("------------------------------");
+
+		}
+
+3. Get all the products group by category and colour 
+Map<String,Map<String,List<Products>>>
+
+// Answer
+Map<String, Map<String, List<Products>>> dataByCategoryByColour = productList.stream()
+				.collect(Collectors.groupingBy(Products::getCategoryId, Collectors.groupingBy(Products::getColour)));
+		dataByCategoryByColour.forEach((categoryId, colourGroup) -> {
+			System.out.println("Category Id" + categoryId);
+			colourGroup.forEach((colour, prList) -> {
+				System.out.println("Colour" + colour);
+				System.out.println("Products List" + prList);
+				System.out.println("***************************");
+			});
+		});
+
+//Gourav
+Map<String, Map<String, List<Products>>> dataByCategoryAndByColor = productList.stream().collect(Collectors.groupingBy(Products::getCatergoryId, Collectors.groupingBy(Products::getColor)));
+        dataByCategoryAndByColor.forEach((a,product)-> product.forEach((color,prList)-> System.out.println(color+"-->"+prList)));
+        
+
+4. Find all the users who have roduct with productId =4
+
+5. Calculate the total for each order
+productId from productsArr
+quantity: map
+price : productsArr
+
+flatMap
+map -- iterate through a normal arr
+flatmap -- iterate through a nested arr
+
+// andrei
+orderList.stream()
+                .collect(Collectors.toMap(Orders::getOrderId,
+                        order -> order.getProductsArr().stream()
+                                .map(product -> product.getPrice() * order.getProductQuantityMap().get(product.getProductId()))
+                                .reduce(Integer::sum)
+                                .orElse(0)))
+                .forEach((order, productCount) -> {
+                    System.out.println(order + "=>" + productCount);
+                });
+
+
+int totalOrdersSum = orderList.stream()
+				.flatMap(order -> order.getProductsArr().stream()
+						.map(product -> product.getPrice() * order.getProductQuantityMap().get(product.getProductId())))
+				.mapToInt(Integer::intValue).sum();
+		System.out.println("Total of all orders put together" + totalOrdersSum);
+
+int totalParticularOrderSum = orderList.stream().filter(order -> order.getOrderId() == 103)
+				.flatMap(order -> order.getProductsArr().stream()
+						.map(product -> product.getPrice() * order.getProductQuantityMap().get(product.getProductId())))
+				.mapToInt(Integer::intValue).sum();
+		System.out.println("Total of all orders put together" + totalParticularOrderSum);
+
+		
+// Find the total quantity of all products in a particular order
+		int totalQuantityForAnOrder = orderList.stream().filter(order -> order.getOrderId() == 103).flatMap(order -> {
+			return order.getProductsArr().stream().map(product -> {
+
+				return order.getProductQuantityMap().get(product.getProductId());
+			});
+
+		}).mapToInt(Integer::intValue).sum();
+		System.out.println("totalQuantityForAnOrder" + totalQuantityForAnOrder);
+// Partition -- split the data into 2 groups -- pass a predicate on how to split the data 
+
+//gourav
+        productList.stream().collect(Collectors.partitioningBy(or->or.getPrice()>1000)).forEach((a,b)-> System.out.println(a+"->"+b));
+
+Map<Boolean, List<Products>> partitionedData = productList.stream()
+				.collect(Collectors.partitioningBy(product -> product.getPrice() > 1000));
+		partitionedData.forEach((isAbove1000, productsArr) -> {
+			System.out.println("Price above 1000" + isAbove1000);
+			System.out.println("Products" + productsArr);
+
+		});
+
+// Partitioning based on the price and colour
+productList.stream()
+				.collect(Collectors.partitioningBy(product -> product.getPrice() > 1000,
+						Collectors.partitioningBy(product -> product.getColour().equals("red"))))
+				.forEach((isAbove1000, innerpartition) -> {
+					System.out.println("Price above 1000" + isAbove1000);
+					innerpartition.forEach((isRed, prList) -> {
+						System.out.println("Colour is red" + isRed);
+						System.out.println("Products" + prList);
+					});
+
+				});
+
+group by : Create 0 or more groups based on the field values
+Map<K,List<T>> where k is type of grouped field
+Partitioning : Create 2 groups. One group which satisfies the predicate condition and another which doesnot satisfy the predicate
+Map<Boolean,List<T>>
+Grouping based on gender
+
+
+
+
+
+

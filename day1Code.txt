@@ -1,0 +1,148 @@
+package InterfaceExamples;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@FunctionalInterface
+interface MyBinaryOperations{
+	int operation(int a, int b);
+}
+
+
+interface Vehicle{
+//	int gear=0;// Gear has to be changing
+//	int speed=0;
+	void changeGear(int newGear);
+	void speedUp(int newSpeed);
+	void speedDown(int newSpeed);
+	void applyBreak();
+}
+
+public class Bicycle implements Vehicle{
+	int gear;
+	int speed;
+	String color;
+	
+	public Bicycle(int gear, int speed, String color) {
+		super();
+		this.gear = gear;
+		this.speed = speed;
+		this.color = color;
+	}
+	
+
+	@Override
+	public String toString() {
+		return "Bicycle [gear=" + gear + ", speed=" + speed + ", color=" + color + "]";
+	}
+
+	public  void changeSpeedBasedOnColor(String color)
+	{
+		switch(color)
+		{
+		case "red" :this.speedUp(150);break;
+		case "blue" :this.speedUp(15);break;
+		case "black" :this.speedUp(100);break;
+		case "yellow" :this.speedUp(120);break;
+		default: this.speedUp(50);break;
+		}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Bicycle Bike=new Bicycle(3,100,"red");
+//		Vehicle bike1=new Vehicle();// No objects can be created of an interface
+		Vehicle bike2=new Bicycle(3,50,"blue");
+		System.out.println(bike2);
+		bike2.speedUp(100);
+		System.out.println("After change in speed"+bike2);
+		// List of bikes
+		List<Bicycle> bikeArr=new ArrayList<Bicycle>();
+		bikeArr.add(new Bicycle(4,100,"black"));
+		bikeArr.add(new Bicycle(4,80,"blue"));
+		bikeArr.add(new Bicycle(4,90,"yellow"));
+		bikeArr.add(new Bicycle(3,120,"red"));
+		bikeArr.add(new Bicycle(2,120,"blue"));
+		bikeArr.add(new Bicycle(4,120,"red"));
+		bikeArr.add(new Bicycle(4,120,"red"));
+		for(Bicycle b:bikeArr) {
+			System.out.println(b);
+		}
+		bikeArr.forEach(Bicycle::applyBreak);
+		bikeArr.forEach(System.out::println);
+		
+		// Used lambda expression
+		bikeArr.forEach(bike->{
+			bike.speedUp(20);
+			System.out.println(bike);
+		});
+		// Change different speeds for different bikes
+		bikeArr.forEach(bike->{
+			switch(bike.color)
+			{
+			case "red" :bike.speedUp(150);break;
+			case "blue" :bike.speedUp(15);break;
+			case "black" :bike.speedUp(100);break;
+			case "yellow" :bike.speedUp(120);break;
+			default: bike.speedUp(50);break;
+			}
+			
+			System.out.println(bike);
+		});
+		MyBinaryOperations greatestOfTwoNumbers = (a,b)-> a>b?a:b;
+		MyBinaryOperations smallestOfTwoNumbers = (a,b)-> a<b?a:b;
+		
+		System.out.println(greatestOfTwoNumbers.operation(5, 2));
+		System.out.println(smallestOfTwoNumbers.operation(5, 2));
+		
+		bikeArr.forEach(bike -> {
+			if(bike.color=="blue")
+			{
+				System.out.println(bike);
+			}
+		});
+		
+		// function1 (function2(20)); // nested function callls
+		
+		System.out.println("Blue bikes");
+		bikeArr.stream().filter(bike-> bike.color=="blue").forEach(System.out::println);// pipeline of methods
+		
+		bikeArr.stream().filter(bike-> bike.color=="blue").findFirst();
+		// Only one element -- first element which satisfies the filter 
+		// filter will be executed only till we get the first element which satisfies the predicate; Not iterate through the entire array
+		
+		
+		
+		
+		
+
+	}
+	
+	
+
+	@Override
+	public void changeGear(int newGear) {
+		// TODO Auto-generated method stub
+		gear=newGear;
+		
+	}
+
+	@Override
+	public void speedUp(int newSpeed) {
+		// TODO Auto-generated method stub
+		speed =newSpeed;
+	}
+
+	@Override
+	public void speedDown(int newSpeed) {
+		// TODO Auto-generated method stub
+		speed =newSpeed;
+	}
+
+	@Override
+	public void applyBreak() {
+		// TODO Auto-generated method stub
+		speed =0;
+		
+	}
+
+}

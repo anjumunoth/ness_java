@@ -1,0 +1,121 @@
+Streams
+	-- Library
+	-- Pipeline of operations on a source of data
+	-- Source of data 
+		-- Collection, file, generator
+	-- Operations
+		-- Intermediate
+			-- One or more operations
+		-- Terminal
+			-- One operation allowed
+		-- Work like a pipeline
+			-- Output of one operation becomes the input for the next operation
+		-- Does not mutate the source
+	-- Functional transformation of data 
+	-- Performance beneficial
+	-- What has to be done, library will decide how to do it
+	-- intermediate data structures -- temp ; deleted implicitly
+
+Intermediate operations
+	-- One or more operations
+	-- Lazily executed
+
+Terminal operations
+	-- One operation allowed
+
+bikeArr.stream().filter(bike-> bike.color=="blue").forEach(System.out::println);// pipeline of methods
+
+bikeArr -- 7 bikes out of which 2 are blue
+filter 
+	-- filter out the elements
+	-- Input -- 7 elements
+	-- Output -- 2 elements
+	-- Intermediate operation
+
+forEach
+	-- iterate through the various input elements
+	-- Input -- 2
+	-- Output -- 2
+	-- terminal operation
+
+bikeArr.stream()
+.map(bike-> {
+	bike.color=bike.color.toLower();
+	return bike;
+
+})
+.filter(bike-> bike.color=="blue")
+.forEach(System.out::println);// pipeline of methods
+
+bikeArr.stream()
+.forEach(bike-> {
+	bike.color=bike.color.toLower();
+	return bike;
+
+})
+.filter(bike-> bike.color=="blue")
+.forEach(System.out::println);// pipeline of methods
+
+
+bikeArr.stream()
+.skip(1)
+.filter(bike-> bike.color=="blue")
+.forEach(System.out::println);// pipeline of methods
+
+bikeArr.stream()
+.filter(bike-> bike.color=="blue")
+.skip(1)
+.forEach(System.out::println);// pipeline of methods ;
+
+// No terminal operation
+// 7 bikes ; 2 blue bikes
+bikeArr.stream()
+.forEach(bike-> {
+	bike.color=bike.color.toLower();
+	sysout(bike)
+
+});// 7 bikes
+
+bikeArr.stream()
+.filter(bike-> bike.color=="blue")
+.skip(1)
+.forEach(System.out::println);// pipeline of methods ;// 1 bike 
+
+// Only one intermediate operation ; no terminal operation
+bikeArr.stream()
+.filter(bike-> {
+	sysout(bike);
+	if (bike.color=="blue")
+		return true;
+	else
+		return false;
+	
+	});// 7 bike will be consoled -- NO; no outputs on the console 
+ 
+Intermediate -- lazily executed; only executed when terminal operation is executed
+
+
+
+Why streams 
+	-- Lazy execution
+	-- Pipeline -- optimisation based on terminal operation
+	-- lesser iteration
+	-- Performance -- lesser computations
+	-- No permanent data structured created based on intermediate operations; 
+	-- Memory efficient
+	-- Automatic garbage collections
+	-- 
+
+
+
+
+
+
+
+	
+
+
+
+
+
+ 

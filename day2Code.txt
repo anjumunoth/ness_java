@@ -1,0 +1,74 @@
+package ECommerceApp;
+
+public class Products {
+	private int productId, price, quantityInHand,discount;
+	private String productName, description,colour,categoryId;
+	
+	@Override
+	public String toString() {
+		return "Products [productId=" + productId + ", price=" + price + ", quantityInHand=" + quantityInHand
+				+ ", discount=" + discount + ", productName=" + productName + ", description=" + description
+				+ ", colour=" + colour + ", categoryId=" + categoryId + "]";
+	}
+	public Products(int productId, int price, int quantityInHand, int discount, String productName, String description,
+			String colour, String categoryId) {
+		super();
+		this.productId = productId;
+		this.price = price;
+		this.quantityInHand = quantityInHand;
+		this.discount = discount;
+		this.productName = productName;
+		this.description = description;
+		this.colour = colour;
+		this.categoryId = categoryId;
+	}
+	public int getProductId() {
+		return productId;
+	}
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+	public int getPrice() {
+		return price;
+	}
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public int getQuantityInHand() {
+		return quantityInHand;
+	}
+	public void setQuantityInHand(int quantityInHand) {
+		this.quantityInHand = quantityInHand;
+	}
+	public int getDiscount() {
+		return discount;
+	}
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+	public String getProductName() {
+		return productName;
+	}
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getColour() {
+		return colour;
+	}
+	public void setColour(String colour) {
+		this.colour = colour;
+	}
+	public String getCategoryId() {
+		return categoryId;
+	}
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+	
+}

@@ -1,0 +1,214 @@
+// data creation and insertion
+List<Products> productList = new ArrayList<>();
+
+		productList.add(new Products(1, 1500, 50, 10, "Laptop", "High performance laptop", "Black", "E001"));
+		productList.add(new Products(2, 500, 100, 5, "Smartphone", "Latest model smartphone", "Blue", "E002"));
+		productList.add(new Products(3, 200, 30, 0, "Headphones", "Noise-cancelling headphones", "Red", "A003"));
+		productList.add(new Products(4, 700, 20, 15, "Smartwatch", "Fitness tracking smartwatch", "White", "E004"));
+		productList.add(new Products(5, 100, 200, 20, "USB Drive", "32GB USB flash drive", "Silver", "A005"));
+		productList
+				.add(new Products(6, 300, 80, 10, "Bluetooth Speaker", "Portable Bluetooth speaker", "Green", "A006"));
+		productList.add(new Products(7, 1200, 10, 25, "Tablet", "10-inch display tablet", "Gold", "E007"));
+
+		for (Products product : productList) {
+			System.out.println(product);
+		}
+		List<Orders> orderList = new ArrayList<>();
+
+		Map<Integer, Integer> productQuantityMap1 = new HashMap<>();
+		productQuantityMap1.put(1, 1); // 1 Laptop
+		productQuantityMap1.put(3, 2); // 2 Headphones
+
+		Orders order1 = new Orders(101, "User1", List.of(productList.get(0), productList.get(2)), productQuantityMap1,
+				new Date(), "Credit Card", "Paid");
+
+		Map<Integer, Integer> productQuantityMap2 = new HashMap<>();
+		productQuantityMap2.put(4, 1); // 1 Smartwatch
+		productQuantityMap2.put(5, 3); // 3 USB Drives
+
+		Orders order2 = new Orders(102, "User2", List.of(productList.get(3), productList.get(4)), productQuantityMap2,
+				new Date(), "Debit Card", "Pending");
+
+		Map<Integer, Integer> productQuantityMap3 = new HashMap<>();
+		productQuantityMap3.put(6, 2); // 2 Bluetooth Speakers
+		productQuantityMap3.put(7, 1); // 1 Tablet
+
+		Orders order3 = new Orders(103, "User3", List.of(productList.get(5), productList.get(6)), productQuantityMap3,
+				new Date(), "PayPal", "Paid");
+
+		orderList.add(order1);
+		orderList.add(order2);
+		orderList.add(order3);
+
+		for (Orders order : orderList) {
+			System.out.println(order);
+		}
+
+Products [productId=1, price=1500, quantityInHand=50, discount=10, productName=Laptop, description=High performance laptop, colour=Black, categoryId=E001]
+Products [productId=2, price=500, quantityInHand=100, discount=5, productName=Smartphone, description=Latest model smartphone, colour=Blue, categoryId=E002]
+Products [productId=3, price=200, quantityInHand=30, discount=0, productName=Headphones, description=Noise-cancelling headphones, colour=Red, categoryId=A003]
+Products [productId=4, price=700, quantityInHand=20, discount=15, productName=Smartwatch, description=Fitness tracking smartwatch, colour=White, categoryId=E004]
+Products [productId=5, price=100, quantityInHand=200, discount=20, productName=USB Drive, description=32GB USB flash drive, colour=Silver, categoryId=A005]
+Products [productId=6, price=300, quantityInHand=80, discount=10, productName=Bluetooth Speaker, description=Portable Bluetooth speaker, colour=Green, categoryId=A006]
+Products [productId=7, price=1200, quantityInHand=10, discount=25, productName=Tablet, description=10-inch display tablet, colour=Gold, categoryId=E007]
+
+Costliest product : 1
+
+1.Create a list of all products greater than 500
+//yasmin
+products.stream()
+    .filter(p -> p.getPrice() > 500)
+    .collect(Collectors.toList());
+
+//Arvind
+productList.stream().filter(item -> item.getPrice() > 500).forEach(System.out::println);
+
+//Gourav
+List<Products> listOfProducts = productList.stream().filter(item -> item.getPrice() > 500).collect(Collectors.toList());
+
+//Sudhansu
+List<Products> productList1 = productList.stream().filter(p -> p.getPrice()>500).toList();
+
+//Suraj
+List<Products> productsGreaterThan500 = productList.stream().filter(product -> product.getPrice() > 500)
+                .collect(Collectors.toList());
+
+//Raja
+productList.stream().filter(product -> product.price > 500).forEach(System.out::println);
+
+
+
+2. Sum of all prices of all the products
+//arvind
+productList.stream().mapToInt(p-> p.getPrice()).sum();
+
+//Raja
+int totalPrice = productList.stream()
+                            .mapToInt(product -> product.price)
+                            .sum();
+
+System.out.println("Total sum of all product prices: " + totalPrice);
+
+//yasmin
+int totalPrice = products.stream()
+    .collect(Collectors.summingInt(Product::getPrice));
+
+//Suraj
+int sumOfPrices = productList.stream().mapToInt(Products::getPrice).sum();
+
+//gourav
+productList.stream().mapToInt(Products::getPrice).sum();
+
+//Sudhansu
+int prodSum = productList.stream().map(x -> x.getPrice()).reduce(0, Integer::sum);
+
+3. max and min prices 
+
+//Raja
+
+productList.stream()
+                .max((p1, p2) -> Integer.compare(p1.price, p2.price));
+				
+productList.stream()
+                .min((p1, p2) -> Integer.compare(p1.price, p2.price));
+
+//yasmin
+products.stream()
+    .reduce(BinaryOperator.maxBy(Comparator.comparingInt(Product::getPrice)));
+products.stream()
+    .reduce(BinaryOperator.minBy(Comparator.comparingInt(Product::getPrice)));
+
+//gourav
+Comparator<Products> byPrice=Comparator.comparingInt(Products::getPrice);
+        BinaryOperator<Products> maxPrice= BinaryOperator.maxBy(byPrice);
+        BinaryOperator<Products> minPrice= BinaryOperator.minBy(byPrice);
+        Optional<Products> ProductWithMaxPrice=productList.stream().reduce(maxPrice);
+        Optional<Products> ProductWithMinPrice=productList.stream().reduce(minPrice);
+        System.out.println(ProductWithMaxPrice);
+        System.out.println(ProductWithMinPrice);
+
+//Suraj
+int maxPrice = productList.stream().mapToInt(Products::getPrice).max().getAsInt();
+
+
+
+4. Create a map of productId and their respective productName
+
+//Raja
+Map<Integer, String> productMap = productList.stream()
+                .collect(Collectors.toMap(product -> product.id, product -> product.name));
+
+productMap.forEach((id, name) -> 
+            System.out.println("Product ID: " + id + ", Product Name: " + name));
+
+//Anju
+Map<Integer, String> productIdNameMap = productList.stream()
+				.collect(Collectors.toMap(product -> product.getProductId(), product -> product.getProductName()));
+System.out.println(productIdNameMap);
+
+//gourav
+        Map<Integer, String> mapOfProductId = productList.stream().collect(Collectors.toMap(product -> product.getProductId(),product ->product.getProductName()));
+
+
+5. Sort the productList based on quantity
+
+//Raja
+productList.sort(Comparator.comparingInt(product -> product.getQuantityInHand()); //ascending order
+
+//yasmin
+List<Product> sortedList = products.stream()
+    .sorted(Comparator.comparingInt(Product::getQuantityInHand))
+    .collect(Collectors.toList());
+
+//Gourav
+        List<Products> collect = productList.stream().sorted(Comparator.comparingInt(Products::getQuantityInHand)).collect(Collectors.toList());
+
+
+6. 
+Sort the elements based on price and productName
+productList.stream().sorted(Comparator.comparingInt(Products::getPrice).thenComparing(Products::getProductName))
+				.collect(Collectors.toList()).forEach(System.out::println);
+ //Gourav 
+List<Products> collect1 = productList.stream().sorted(Comparator.comparingInt(Products::getPrice).thenComparing(Products::getProductName)).collect(Collectors.toList());                       
+collect1.stream().forEach(item -> {                                                                                                                                                             
+    System.out.println(item.getProductId()+" "+item.getProductName());                                                                                                                          
+});                                                                                                                                                                                             
+
+
+7. Filter out some fields ; List with productId, productName
+
+//Raja
+	var filteredProductList = productList.stream()
+            .map(product -> Map.of("productId", product.getProductId(), "productName", product.getProductName()))
+            .collect(Collectors.toList());
+	
+	filteredProductList.forEach(product -> 
+            System.out.println("productId: " + product.get("productId") + ", productName: " + product.get("productName")));
+
+//Yasmin
+
+List<String> productInfoList = products.stream()
+		    .map(product -> product.getProductId() + ": " + product.getProductName())
+		    .collect(Collectors.toList());
+
+//gourav
+              productList.stream().map(product->List.of(product.getProductId(),product.getProductName())).collect(Collectors.toList()).forEach(System.out::println);
+
+				
+
+8. Group products by category
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
