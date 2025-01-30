@@ -1,0 +1,31 @@
+Array and ArrayList
+	-- fixed size and dynamic size
+	-- why dynamic size 
+		-- at creation -- may not size
+		-- efficient memory management
+	-- primitive data types and custom data types; Generics
+	-- Array -- no predefined functions
+	-- arrayList -- implementing a number of interfaces(methods) and classes; define them explicitly
+	-- Better memory consumption
+	-- Iterartors -- Interface which is implemented by Collections -- used to traverse the collections
+
+ArrayList -- Collection Framework
+
+Collections classes in java
+-- ArrayList
+-- hashmap
+-- Treemap
+-- Stack
+-- LinkedList
+-- hashtable
+-- Concurrenthashmap
+-- Weak hash map
+-- linkedhashset
+-- linkedhashmap
+-- queue
+
+Interface in java
+-- Collections
+-- Iterators
+-- ListIterators
+-- 
