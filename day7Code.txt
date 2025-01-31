@@ -1,0 +1,171 @@
+package sample1;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+public class CompletableFutureExamples {
+	public static CompletableFuture<Void> writeFileContentsAsync(String filePath, String content) {
+		return CompletableFuture.runAsync(() -> {
+			try {
+				Path path = Path.of(filePath);
+				Files.writeString(path, content);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		});
+	}
+
+	public static String readFileContentsSync(String filePath) throws IOException {
+		Path path = Path.of(filePath);
+		return Files.readString(path);
+	}
+
+	public static CompletableFuture<String> readFileContentsAsync(String filePath) {
+		return CompletableFuture.supplyAsync(() -> {
+			try {
+				Path path = Path.of(filePath);
+				return Files.readString(path);
+			} catch (IOException e) {
+//				throw new RuntimeException(e);
+				return "";
+			}
+		});
+	}
+
+	public static void main(String args[]) {
+//		CompletableFuture<String> future = new CompletableFuture<>();
+//		future.complete("Thank u");
+//		try {
+//			String result = future.get();
+//			System.out.println(result);
+//
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ExecutionException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		/*
+		 * // Asynchronous task CompletableFuture<Void> future =
+		 * CompletableFuture.runAsync(() -> { // Simulating a long-running task try {
+		 * Thread.sleep(2000); } catch (InterruptedException e) { e.printStackTrace(); }
+		 * System.out.println("Task finished!"); });
+		 * 
+		 * // Waiting for the task to complete future.join();
+		 */
+
+		CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 50);
+		CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> 30);
+
+		// Combining two futures
+		CompletableFuture<Integer> resultFuture = future1.thenCombine(future2, Integer::sum);
+
+		try {
+			Integer result = resultFuture.get();
+			System.out.println("Result: " + result); // Result: 80
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		try {
+			String contents = readFileContentsSync("C:\\Users\\Anju Munoth\\eclipse-workspace\\sample1\\sampleFile1");
+			System.out.println(contents);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("reading file");
+		CompletableFuture<String> future = readFileContentsAsync(
+				"C:\\Users\\Anju Munoth\\eclipse-workspace\\sample1\\sampleFile1");
+
+		future.thenAccept(contents -> System.out.println("File Contents:\n" + contents)).exceptionally(ex -> {
+			System.err.println("An error occurred: " + ex.getMessage());
+			return null;
+		});
+
+		// Do other tasks here while the file is being read
+		System.out.println("reading file");
+		// Wait for the asynchronous task to complete
+		future.join();
+		String filePath = "C:\\Users\\Anju Munoth\\eclipse-workspace\\sample1\\sampleFile2.txt";
+//		String filePath = "sample2.txt";
+		String content = "This is the content to be written into the file.";
+
+		CompletableFuture<Void> futureWriteToFile = writeFileContentsAsync(filePath, content);
+
+		futureWriteToFile.thenRun(() -> System.out.println("File writing completed!")).exceptionally(ex -> {
+			System.err.println("An error occurred: " + ex.getMessage());
+			return null;
+		});
+
+		// Do other tasks here while the file is being written
+
+		// Wait for the asynchronous task to complete
+		futureWriteToFile.join();
+
+//		 Read and write into a file
+		CompletableFuture<String> futureReadFile1 = readFileContentsAsync(
+				"C:\\Users\\Anju Munoth\\eclipse-workspace\\sample1\\sampleFile1");
+		CompletableFuture<Void> writeFuture = futureReadFile1.thenComposeAsync(readFileContents -> {
+			String fP = "sampleFile4.txt";
+			return writeFileContentsAsync(fP, readFileContents);
+
+		});
+		writeFuture.thenRun(() -> System.out.println("File writing completed!")).exceptionally(ex -> {
+			System.err.println("An error occurred: " + ex.getMessage());
+			return null;
+		});
+
+		// Read data from 2 files and write to a third file
+		CompletableFuture<String> futureReadFile3 = readFileContentsAsync(
+				"C:\\Users\\Anju Munoth\\eclipse-workspace\\sample1\\sampleFile1");
+		CompletableFuture<String> futureReadFile4 = readFileContentsAsync("sampleFile2.txt");
+		CompletableFuture<String> futurecombinedFileReads = futureReadFile3.thenCombineAsync(futureReadFile4,
+				(data1, data2) -> {
+					return data1 + data2;
+
+				});
+		CompletableFuture<Object> writeFuture3 = futurecombinedFileReads.thenApplyAsync(combinedData -> {
+			String fP = "sampleFile5.txt";
+			return writeFileContentsAsync(fP, combinedData);
+		});
+		writeFuture3.thenRun(() -> System.out.println("Combined File writing completed!")).exceptionally(ex -> {
+			System.err.println("An error occurred: " + ex.getMessage());
+			return null;
+		});
+		writeFuture3.join();
+
+		// Read contents form 3 files and put in the 4 file
+		try {
+			CompletableFuture<String> f1 = readFileContentsAsync("sampleFile1");
+			CompletableFuture<String> f2 = readFileContentsAsync("sampleFile9.txt");
+			CompletableFuture<String> f3 = readFileContentsAsync("sampleFile3.txt");
+
+			CompletableFuture<Void> allOf = CompletableFuture.allOf(f1, f2, f3);
+
+			CompletableFuture<Object> allResults = allOf.thenApplyAsync(v -> {
+				String res = List.of(f1, f2, f3).stream().map(CompletableFuture::join).collect(Collectors.joining(" "));
+				String fP = "sampleFile8.txt";
+				System.out.println("Combined data of 3 files" + res);
+				return writeFileContentsAsync(fP, res);
+
+			});
+
+			allResults.thenRun(() -> System.out.println("Combined with all of  File writing completed!"))
+					.exceptionally(ex -> {
+						System.err.println("An error while reading the file occurred: " + ex.getMessage());
+						return null;
+					});
+
+			// Wait for all results to be combined
+			allResults.join();
+		} catch (Exception e) {
+			// e.printStackTrace();
+
+		}
+
+	}
+}

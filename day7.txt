@@ -1,0 +1,99 @@
+Completable future 
+	-- Use for asynchronous execute
+	-- Once it is completed -- perform the actions -- attach callbacks
+		-- success
+			-- data 
+		-- error
+			-- error -- handle the exception
+			-- default value
+	-- perform async 
+		-- sequentially
+		-- parallelly
+	-- pros and limitations
+	-- methods
+		-- sync variant and async variant
+	-- threads are used for performing the async operations
+		-- Leave it forkJoinPool 
+			-- manage the threads
+		-- Use executor
+			-- manually say the number of threads and use these threads for the operations 
+
+File operations
+	-- read
+	-- write
+
+1. Read contents from a file
+	-- size of file
+	-- Sync
+		--Small file
+		-- Read the entire content and send it as a response
+	-- Async
+		-- Large files
+		-- Parallel operations when the file is being read
+
+2. Writing contents into a file
+3. Read and write into another file (Sequential async tasks)
+4. Read contents from 2 files (In Parallel)
+	
+5. Read contents from 2 file and write in 3rd file 
+	-- Read contents parallelly
+	-- Once both the reads are complete -- perform the writes
+6. Read from n files and then do some write operation
+7. Read from a file and transform the data read from the file
+8. First read from file1, then read from file 2and write the contents in the same manner
+	Read from file1, sequentially read from file2, sequentially do the write op
+
+
+Creation of future
+Callbacks
+Transformation
+Exception handling
+
+For each of the methods , passing a executor -- optional
+
+Creation 
+	-- supplyAsync -- perform the task in an async task and return some data
+	-- runAsync -- Runnable operation -- no return allowed 
+	-- complete
+Callbacks methods
+	-- thenApply, thenApplyAsync
+		-- execute another async task(return a value) based on the result of the first async task
+		-- Return another completableFuture
+		
+	-- thenAccept, thenAcceptAsync
+		-- transform the data got from async task
+		-- read from a file and and convert to json and send as a response
+	-- thenRun, thenRunAsync
+		---- execute another async task(return no value) based on the result of the first async task
+		-- Return another completableFuture
+		
+	-- thenCompose, thenComposeAsync
+		
+
+Exception handling methods
+	-- exceptionally
+	-- handle
+	-- 
+
+Combine multiple future objects
+	-- thenCombine, thenCombine Async
+ 
+CompletableFuture<Object> wf1 = cf1.thenApplyAsync(data -> {
+			// read is successful
+			cf1.join();
+			System.out.println("Contents before writing" + data);
+			return writeFileAsync("sample4.txt", data);
+
+		});
+		wf1.thenRunAsync(() -> {
+			System.out.println("Read and Write operation successful");
+		});
+		wf1.join();
+	
+
+
+
+
+
+
+
