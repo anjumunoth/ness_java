@@ -1,0 +1,94 @@
+Short circuit operation:
+ -- preventing unnecessary iterations on large data sets on streams
+anyMatch -- 
+findFirst -- 
+limit
+
+reduce -- all the elements -- not a short circuit 
+
+
+Various map implementations:
+HashMap
+	-- store the data in different buckets
+	-- entries within a bucket (linked list or RBtree)
+	-- not going to maintain the insertion order
+
+LinkedHashMap
+	-- store the data in different buckets
+	-- entries within a bucket (linked list )
+	--  going to maintain the insertion order or access order
+	-- LRU cache
+
+TreeMap
+	-- store the data in a balanced binary Red Black tree
+	-- Binary tree
+		-- Each parent will have only 2 children
+		-- Left child < parent
+		-- Right child > parent
+	-- Sort the data(key) and store it in binary tree
+	-- Balanced tree
+	-- Red Black tree
+	-- Use cases
+		-- Employee hierarchy
+		-- Working with sorted data
+
+Choice of sorting key
+Distinct
+Queries --
+100  
+
+1. Find the product which have a particular productId -- 25
+2. Find all products which are in a range of productid -- 5
+3. Find all products which have a particular price -- 30
+4. Find all products which are in a range of price -- 40
+
+Sorting key : price or categoryId
+
+WeakHashMap
+	-- HashMap + additional feature
+	-- If the referenced field is removed, then the entry from the map will also be removed
+
+
+Completable Future:
+
+1. Read file of size 1 mb -- < 1 min
+2. Read file of size 100 mb -- 1to 5 min
+3. Fetch 100 records from a table in Oracle -- < 1min
+3. Fetch 1 records from a table in Oracle -- < 30 sec
+
+Time taken Depends on a number of factors -- size, network , amount of data
+
+Write file, db based operations, talk with server api's 
+
+For all the above operations -- take some time (unknown)
+Get the result(data or error) -- operation is complete (success or failure)
+
+Operations -- Asynchronous operation 
+
+Java -- multithreaded
+
+main method-- MainThread executing it
+
+Synchronous execution:
+Perform async op -- Main thread will have to wait for the async task to complete to proceed to the next stat execution 
+
+ASynchronous execution:
+Perform async op -- Main thread comes across async task; Create a new thread and ask the newly created thread to perform the async task.Main Thread is free to proceed to the next stat execution. Once the child thread has completed the async op ; execute the attached callbacks (main thread or by the child thread)(one callback for success, one callback for failure)
+
+Which is better?Performance
+	-- ASynchronous execution:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
